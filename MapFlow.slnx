@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MapFlow.SourceGenerator/MapFlow.SourceGenerator.csproj" />
+    <Project Path="src/MapFlow/MapFlow.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/MapFlow.Tests/MapFlow.Tests.csproj" />
+  </Folder>
+</Solution>

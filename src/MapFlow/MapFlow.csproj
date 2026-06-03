@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>MapFlow</RootNamespace>
+    <Description>Zero-reflection, zero-dependency mapper for .NET. Maps objects via interfaces, selectors, or in-place mutation. Supports PagedResult.</Description>
+    <PackageTags>mapper;mapping;dto;pagedresult;automapper</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>MapFlow.png</PackageIcon>
+    <Authors>MapFlow</Authors>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="MapFlow.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MapFlow.SourceGenerator\MapFlow.SourceGenerator.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+</Project>

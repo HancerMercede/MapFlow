@@ -1,0 +1,156 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6442B95D-FC93-A965-F80C-F66E8C2EAF78}|src\\MapFlow\\MapFlow.csproj|c:\\users\\hancer mercede\\source\\repos\\mapflow\\src\\mapflow\\mapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6442B95D-FC93-A965-F80C-F66E8C2EAF78}|src\\MapFlow\\MapFlow.csproj|solutionrelative:src\\mapflow\\mapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6603565E-F48E-A2CF-5955-4B0A561621BF}|test\\MapFlow.Tests\\MapFlow.Tests.csproj|c:\\users\\hancer mercede\\source\\repos\\mapflow\\test\\mapflow.tests\\mappertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6603565E-F48E-A2CF-5955-4B0A561621BF}|test\\MapFlow.Tests\\MapFlow.Tests.csproj|solutionrelative:test\\mapflow.tests\\mappertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6603565E-F48E-A2CF-5955-4B0A561621BF}|test\\MapFlow.Tests\\MapFlow.Tests.csproj|c:\\users\\hancer mercede\\source\\repos\\mapflow\\test\\mapflow.tests\\pagedresulttests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6603565E-F48E-A2CF-5955-4B0A561621BF}|test\\MapFlow.Tests\\MapFlow.Tests.csproj|solutionrelative:test\\mapflow.tests\\pagedresulttests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6603565E-F48E-A2CF-5955-4B0A561621BF}|test\\MapFlow.Tests\\MapFlow.Tests.csproj|c:\\users\\hancer mercede\\source\\repos\\mapflow\\test\\mapflow.tests\\mapflow.tests.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{6603565E-F48E-A2CF-5955-4B0A561621BF}|test\\MapFlow.Tests\\MapFlow.Tests.csproj|solutionrelative:test\\mapflow.tests\\mapflow.tests.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6442B95D-FC93-A965-F80C-F66E8C2EAF78}|src\\MapFlow\\MapFlow.csproj|c:\\users\\hancer mercede\\source\\repos\\mapflow\\src\\mapflow\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6442B95D-FC93-A965-F80C-F66E8C2EAF78}|src\\MapFlow\\MapFlow.csproj|solutionrelative:src\\mapflow\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6442B95D-FC93-A965-F80C-F66E8C2EAF78}|src\\MapFlow\\MapFlow.csproj|c:\\users\\hancer mercede\\source\\repos\\mapflow\\src\\mapflow\\mapperextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6442B95D-FC93-A965-F80C-F66E8C2EAF78}|src\\MapFlow\\MapFlow.csproj|solutionrelative:src\\mapflow\\mapperextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6442B95D-FC93-A965-F80C-F66E8C2EAF78}|src\\MapFlow\\MapFlow.csproj|c:\\users\\hancer mercede\\source\\repos\\mapflow\\src\\mapflow\\imapto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6442B95D-FC93-A965-F80C-F66E8C2EAF78}|src\\MapFlow\\MapFlow.csproj|solutionrelative:src\\mapflow\\imapto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6442B95D-FC93-A965-F80C-F66E8C2EAF78}|src\\MapFlow\\MapFlow.csproj|c:\\users\\hancer mercede\\source\\repos\\mapflow\\src\\mapflow\\imapfrom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6442B95D-FC93-A965-F80C-F66E8C2EAF78}|src\\MapFlow\\MapFlow.csproj|solutionrelative:src\\mapflow\\imapfrom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PagedResultTests.cs",
+              "DocumentMoniker": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\test\\MapFlow.Tests\\PagedResultTests.cs",
+              "RelativeDocumentMoniker": "test\\MapFlow.Tests\\PagedResultTests.cs",
+              "ToolTip": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\test\\MapFlow.Tests\\PagedResultTests.cs",
+              "RelativeToolTip": "test\\MapFlow.Tests\\PagedResultTests.cs",
+              "ViewState": "AgIAADoAAAAAAAAAAAAwwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-03T17:12:13.902Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MapperTests.cs",
+              "DocumentMoniker": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\test\\MapFlow.Tests\\MapperTests.cs",
+              "RelativeDocumentMoniker": "test\\MapFlow.Tests\\MapperTests.cs",
+              "ToolTip": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\test\\MapFlow.Tests\\MapperTests.cs",
+              "RelativeToolTip": "test\\MapFlow.Tests\\MapperTests.cs",
+              "ViewState": "AgIAAOAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-03T17:10:40.627Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MapFlow.Tests",
+              "DocumentMoniker": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\test\\MapFlow.Tests\\MapFlow.Tests.csproj",
+              "RelativeDocumentMoniker": "test\\MapFlow.Tests\\MapFlow.Tests.csproj",
+              "ToolTip": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\test\\MapFlow.Tests\\MapFlow.Tests.csproj",
+              "RelativeToolTip": "test\\MapFlow.Tests\\MapFlow.Tests.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-06-03T17:10:36.139Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PagedResult.cs",
+              "DocumentMoniker": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\src\\MapFlow\\PagedResult.cs",
+              "RelativeDocumentMoniker": "src\\MapFlow\\PagedResult.cs",
+              "ToolTip": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\src\\MapFlow\\PagedResult.cs",
+              "RelativeToolTip": "src\\MapFlow\\PagedResult.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-03T17:10:23.938Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MapperExtensions.cs",
+              "DocumentMoniker": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\src\\MapFlow\\MapperExtensions.cs",
+              "RelativeDocumentMoniker": "src\\MapFlow\\MapperExtensions.cs",
+              "ToolTip": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\src\\MapFlow\\MapperExtensions.cs",
+              "RelativeToolTip": "src\\MapFlow\\MapperExtensions.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAAAIwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-03T17:09:37.977Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Mapper.cs",
+              "DocumentMoniker": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\src\\MapFlow\\Mapper.cs",
+              "RelativeDocumentMoniker": "src\\MapFlow\\Mapper.cs",
+              "ToolTip": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\src\\MapFlow\\Mapper.cs",
+              "RelativeToolTip": "src\\MapFlow\\Mapper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-03T17:08:09.382Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "IMapTo.cs",
+              "DocumentMoniker": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\src\\MapFlow\\IMapTo.cs",
+              "RelativeDocumentMoniker": "src\\MapFlow\\IMapTo.cs",
+              "ToolTip": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\src\\MapFlow\\IMapTo.cs",
+              "RelativeToolTip": "src\\MapFlow\\IMapTo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-03T17:07:44.566Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IMapFrom.cs",
+              "DocumentMoniker": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\src\\MapFlow\\IMapFrom.cs",
+              "RelativeDocumentMoniker": "src\\MapFlow\\IMapFrom.cs",
+              "ToolTip": "C:\\Users\\HANCER MERCEDE\\source\\repos\\MapFlow\\src\\MapFlow\\IMapFrom.cs",
+              "RelativeToolTip": "src\\MapFlow\\IMapFrom.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-03T17:07:19.204Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
