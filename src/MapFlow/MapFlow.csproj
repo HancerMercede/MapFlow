@@ -11,6 +11,7 @@
     <PackageIcon>MapFlow.png</PackageIcon>
     <PackageReadmeFile>readme.nuget.md</PackageReadmeFile>
     <Authors>MapFlow</Authors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Version>1.0.1</Version>
   </PropertyGroup>
