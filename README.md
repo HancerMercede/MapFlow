@@ -1,7 +1,7 @@
 # MapFlow
 
 <p align="center">
-  <img src="src/MapFlow/MapFlow.png" alt="MapFlow Logo" width="200"/>
+  <img src="mapflow-readme.png" alt="MapFlow Logo" width="200"/>
 </p>
 
 **Zero-reflection, zero-dependency object mapper for .NET.**  
