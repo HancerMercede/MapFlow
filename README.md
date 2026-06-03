@@ -1,5 +1,9 @@
 # MapFlow
 
+<p align="center">
+  <img src="src/MapFlow/MapFlow.png" alt="MapFlow Logo" width="200"/>
+</p>
+
 **Zero-reflection, zero-dependency object mapper for .NET.**  
 Map objects via interfaces, selectors, or in-place mutation. Ships a Source Generator that writes the boring mapping code for you.
 
