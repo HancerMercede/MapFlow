@@ -9,12 +9,14 @@
     <PackageTags>mapper;mapping;dto;pagedresult;automapper</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>MapFlow.png</PackageIcon>
+    <PackageReadmeFile>readme.nuget.md</PackageReadmeFile>
     <Authors>MapFlow</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="MapFlow.png" Pack="true" PackagePath="" />
+    <None Include="readme.nuget.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>
