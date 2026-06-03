@@ -13,63 +13,63 @@ dotnet add package MapFlow
 
 ---
 
-## Filosofía
+## Philosophy
 
-La mayoría de los mapeadores de objetos en .NET funcionan así:
+Most object mappers in .NET work like this:
 
-1. Escanean assemblies con reflection para encontrar perfiles de mapeo.
-2. Construyen expression trees en runtime para cada par de tipos.
-3. Compilan esos árboles a delegates.
-4. Cachean todo en diccionarios globales.
+1. Scan assemblies with reflection to find mapping profiles.
+2. Build expression trees at runtime for each type pair.
+3. Compile those trees into delegates.
+4. Cache everything in global dictionaries.
 
-Eso funciona, pero tiene costo: startup lento, memoria extra, incompatibilidad con Native AOT, y una capa de magia que hace difícil entender qué está pasando cuando un mapeo falla.
+It works, but it has a cost: slow startup, extra memory, Native AOT incompatibility, and a layer of magic that makes it hard to understand what's happening when a mapping fails.
 
-MapFlow va al revés:
+MapFlow does the opposite:
 
-**Que sea explícito.** En lugar de "configurá el mapeo y dejanos el resto", te decimos: "escribí tu mapeo o dejanos que el Source Generator lo haga por vos en compilación".
+**Make it explicit.** Instead of "configure the mapping and let us handle the rest," we say: "write your mapping or let the Source Generator do it at compile time."
 
-**Cero magia.** Cada mapping es código C# que podés leer, debuggear, y testear. No hay expression trees, ni reflection, ni delegates compilados en runtime.
+**Zero magic.** Every mapping is C# code you can read, debug, and test. No expression trees, no reflection, no runtime-compiled delegates.
 
-**Dos approachs, una biblioteca.** Usá el approach que quieras según el momento:
-- **Lambda-based**: para mapeos ad-hoc, rápidos, de una sola vez.
-- **Interface-based**: para mapeos que se repiten, con Source Generator opcional.
+**Two approaches, one library.** Use whichever fits the moment:
+- **Lambda-based**: for ad-hoc, one-off mappings.
+- **Interface-based**: for repeatable mappings, with an optional Source Generator.
 
-**Sin dependencias.** Literalmente cero paquetes NuGet. Ni siquiera para el Source Generator — el analyzer viaja incluido en el mismo paquete.
+**Zero dependencies.** Literally zero NuGet packages. Not even the Source Generator — the analyzer ships inside the same package.
 
 ---
 
-## Comparación rápida
+## Quick comparison
 
 | | MapFlow | Mapster | Mapperly | AutoMapper |
 |---|---|---|---|---|
-| **Reflection en runtime** | ❌ No | ✅ Sí | ❌ No (SG) | ✅ Sí |
-| **Expression trees** | ❌ No | ✅ Sí | ❌ No (SG) | ✅ Sí |
-| **Dependencias NuGet** | **0** | 2+ | 1 (analyzer) | 4+ |
-| **Startup overhead** | **0** | Bajo–Medio | 0 | Alto |
-| **AOT compatible** | ✅ Completa | ⚠️ Parcial | ✅ Completa | ❌ No |
-| **Debuggeable** | ✅ C# directo | ⚠️ Expression trees | ✅ C# generado | ❌ Reflection |
-| **Dos approachs** | ✅ Lambdas + Interfaces | ❌ Solo config | ❌ Solo métodos partial | ❌ Solo config |
-| **Source Generator** | ✅ Incluido | ⚠️ Mapster.Tool extra | ✅ Nativo | ❌ |
+| **Runtime reflection** | ❌ No | ✅ Yes | ❌ No (SG) | ✅ Yes |
+| **Expression trees** | ❌ No | ✅ Yes | ❌ No (SG) | ✅ Yes |
+| **NuGet dependencies** | **0** | 2+ | 1 (analyzer) | 4+ |
+| **Startup overhead** | **0** | Low–Medium | 0 | High |
+| **AOT compatible** | ✅ Full | ⚠️ Partial | ✅ Full | ❌ No |
+| **Debuggable** | ✅ Direct C# | ⚠️ Expression trees | ✅ Generated C# | ❌ Reflection |
+| **Two approaches** | ✅ Lambdas + Interfaces | ❌ Config only | ❌ Partial methods only | ❌ Config only |
+| **Source Generator** | ✅ Included | ⚠️ Mapster.Tool extra | ✅ Native | ❌ |
 | **PagedResult** | ✅ Built-in | ❌ | ❌ | ❌ |
 | **Mutation (Apply)** | ✅ Built-in | ❌ | ❌ | ❌ |
 
 ---
 
-## Cómo usar MapFlow
+## How to use MapFlow
 
-### Instalación
+### Installation
 
 ```shell
 dotnet add package MapFlow
 ```
 
-Y ya. No hay `AddMapFlow()`, no hay `TypeAdapterConfig`, no hay profile scanning. Instalás y usás.
+That's it. No `AddMapFlow()`, no `TypeAdapterConfig`, no profile scanning. Install and use.
 
 ---
 
 ### Approach 1: Lambda-based (ad-hoc)
 
-El más simple. Cuando necesitás mapear un objeto a otro en un punto específico y no vale la pena crear una interfaz:
+The simplest. When you need to map one object to another at a specific point and an interface isn't worth it:
 
 ```csharp
 using MapFlow;
@@ -83,26 +83,26 @@ var dto = product.Map(p => new ProductDto
 });
 ```
 
-Funciona con colecciones:
+Works with collections:
 
 ```csharp
 var dtos = products.Map(p => new ProductDto { Id = p.Id, Name = p.Name });
 ```
 
-Con PagedResult:
+With PagedResult:
 
 ```csharp
 var dtos = pagedResult.Map(p => new ProductDto { Id = p.Id, Name = p.Name });
-// dtos.Items, dtos.RowCount, etc. preservados
+// dtos.Items, dtos.RowCount, etc. preserved
 ```
 
-**¿Cuándo usarlo?** Cuando el mapeo es único o tiene lógica condicional que no justifica una interfaz.
+**When to use it:** When the mapping is one-off or has conditional logic that doesn't justify an interface.
 
 ---
 
-### Approach 2: Interface-based (declarativo)
+### Approach 2: Interface-based (declarative)
 
-Cuando el mismo mapeo aparece en varios lugares, evitás repetir la lambda:
+When the same mapping appears in multiple places, avoid repeating the lambda:
 
 ```csharp
 public class ProductDto : IMapFrom<Product>
@@ -111,7 +111,7 @@ public class ProductDto : IMapFrom<Product>
     public string Name { get; set; } = string.Empty;
     public decimal Price { get; set; }
 
-    // Vos escribís el mapeo UNA VEZ
+    // You write the mapping ONCE
     public void MapFrom(Product source)
     {
         Id = source.Id;
@@ -121,7 +121,7 @@ public class ProductDto : IMapFrom<Product>
 }
 ```
 
-Después, tan simple como:
+Then it's as simple as:
 
 ```csharp
 // Single
@@ -133,23 +133,23 @@ var dtos = Mapper.Map<Product, ProductDto>(products);
 // PagedResult
 var dtos = Mapper.Map<Product, ProductDto>(pagedResult);
 
-// O con fluent alias (hace lo mismo):
+// Or with the fluent alias (same thing):
 var dto = product.MapTo<Product, ProductDto>();
 ```
 
-También podés aplicar sobre una instancia existente:
+You can also apply onto an existing instance:
 
 ```csharp
 Mapper.Apply(product, existingDto);
 ```
 
-**¿Cuándo usarlo?** Cuando el mismo mapeo aparece en 2+ lugares. El DTO define la lógica y el `Mapper` la ejecuta.
+**When to use it:** When the same mapping appears in 2+ places. The DTO defines the logic, `Mapper` executes it.
 
 ---
 
-### Approach 3: Source Generator (auto-mágico)
+### Approach 3: Source Generator (auto-magic)
 
-Si el mapeo es trivial (propiedad con mismo nombre y tipo → se copia), ni escribas el `MapFrom`. Hacé la clase `partial` y el Source Generator lo genera solo:
+If the mapping is trivial (same name and type → copy), don't even write `MapFrom`. Make the class `partial` and the Source Generator writes it at compile time:
 
 ```csharp
 public partial class ProductDto : IMapFrom<Product>
@@ -157,11 +157,11 @@ public partial class ProductDto : IMapFrom<Product>
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public decimal Price { get; set; }
-    // ↑ El SG genera MapFrom en compilación
+    // ↑ The SG generates MapFrom at compile time
 }
 ```
 
-Eso genera este código automáticamente (visible en los archivos generados del compilador):
+This generates the following code (visible in the compiler's generated files):
 
 ```csharp
 // <auto-generated/>
@@ -179,18 +179,18 @@ partial class ProductDto
 }
 ```
 
-#### CustomMapFrom — el hook para lógica extra
+#### CustomMapFrom — the hook for custom logic
 
-Cuando tenés una o dos propiedades que requieren lógica especial, no necesitás escribir todo el `MapFrom` manual. El SG te deja un hook `partial void CustomMapFrom(TSource source)`:
+When you have one or two properties that need special handling, you don't need to write the entire `MapFrom` manually. The SG gives you a `partial void CustomMapFrom(TSource source)` hook:
 
 ```csharp
 public partial class ProductDto : IMapFrom<Product>
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
-    public string CategoryName { get; set; } = string.Empty; // no existe en Product
+    public string CategoryName { get; set; } = string.Empty; // doesn't exist on Product
 
-    // El SG mapea Id y Name solo, llamá CustomMapFrom al final
+    // The SG maps Id and Name, then calls CustomMapFrom
     partial void CustomMapFrom(Product source)
     {
         CategoryName = source.Category?.Name ?? "N/A";
@@ -198,9 +198,9 @@ public partial class ProductDto : IMapFrom<Product>
 }
 ```
 
-#### IMapTo — la dirección inversa
+#### IMapTo — the reverse direction
 
-Si preferís que sea la entidad quien sabe crear su DTO:
+If you prefer the entity to know how to create its DTO:
 
 ```csharp
 public partial class Product : IMapTo<ProductDto>
@@ -208,27 +208,27 @@ public partial class Product : IMapTo<ProductDto>
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public decimal Price { get; set; }
-    // ↑ El SG genera MapTo() que devuelve un ProductDto nuevo
+    // ↑ The SG generates MapTo() returning a new ProductDto
 }
 ```
 
-Se usa así:
+Usage:
 
 ```csharp
 var dto = ((IMapTo<ProductDto>)product).MapTo();
 ```
 
-#### ¿Qué propiedades mapea automáticamente?
+#### Which properties does it auto-map?
 
-El SG compara propiedades por **nombre exacto** Y **tipo exacto**. Si coinciden ambas, las incluye. Si no, las salta y sabés que no se mapearon — cero sorpresas en runtime.
+The SG matches properties by **exact name** AND **exact type**. If both match, they're included. If not, they're skipped — no surprises at runtime.
 
-#### ¿Y si ya escribiste MapFrom manual?
+#### What if you already wrote MapFrom manually?
 
-El SG detecta que ya implementaste el método (incluso si es una implementación explícita de interfaz) y **no genera nada**. Tu implementación manual tiene prioridad siempre.
+The SG detects you already implemented the method (including explicit interface implementations) and **generates nothing**. Your manual implementation always takes priority.
 
-#### Records y structs
+#### Records and structs
 
-Todo funciona también con `record`, `record struct` y `struct`:
+Everything works with `record`, `record struct`, and `struct` too:
 
 ```csharp
 public partial record class ProductDto : IMapFrom<Product>
@@ -238,16 +238,16 @@ public partial record class ProductDto : IMapFrom<Product>
 }
 ```
 
-**¿Cuándo usarlo?** Cuando tenés DTOs con propiedades que coinciden 1:1 con la entidad. Que es, justamente, la mayoría de los casos.
+**When to use it:** When you have DTOs with properties that match 1:1 with the entity. Which is, most of the time.
 
 ---
 
-### Mutation en el lugar (Apply)
+### In-place mutation (Apply)
 
-No todo es crear objetos nuevos. A veces tenés que modificar uno existente:
+Sometimes you need to modify an existing object instead of creating a new one:
 
 ```csharp
-// Modificar y devolver el mismo
+// Modify and return the same instance
 product.Apply(p =>
 {
     p.Name = request.Name;
@@ -255,30 +255,30 @@ product.Apply(p =>
     p.UpdatedAt = DateTime.UtcNow;
 });
 
-// Transformar y devolver uno nuevo (inmutable)
+// Transform and return a new one (immutable)
 var updated = product.Apply(p => new Product(p.Id, request.Name, p.Price));
 ```
 
-**¿Para qué sirve?** Para pipelines de transformación donde cada paso modifica algo y después se mapea:
+**What's it for?** Transformation pipelines where each step modifies something and then maps:
 
 ```csharp
 var result = entity
-    .Apply(e => e.Name = e.Name.Trim())         // 1. limpiar
+    .Apply(e => e.Name = e.Name.Trim())         // 1. clean
     .Apply(e => e.CreatedAt = DateTime.UtcNow)  // 2. timestamp
-    .Map(e => new Dto { Name = e.Name });        // 3. proyectar
+    .Map(e => new Dto { Name = e.Name });        // 3. project
 ```
 
 ---
 
-### Null-safety
+### Null safety
 
-Todas las entry points públicas (`Mapper.Map`, `Mapper.Apply`, extension methods) validan argumentos contra `null` y tiran `ArgumentNullException` con el nombre del parámetro. No tenés que acordarte de checkear vos.
+All public entry points (`Mapper.Map`, `Mapper.Apply`, extension methods) validate arguments against `null` and throw `ArgumentNullException` with the parameter name. You don't need to remember to check yourself.
 
 ---
 
 ## PagedResult
 
-Viene incluido en el paquete, no necesitás crear el tuyo:
+It ships with the package — no need to create your own:
 
 ```csharp
 public class PagedResult<T>
@@ -291,13 +291,13 @@ public class PagedResult<T>
 }
 ```
 
-Mapealo con lambda directo desde la instancia (sin extension method, es un método real):
+Map it with a lambda directly from the instance (a real method, not an extension):
 
 ```csharp
 var dtos = paged.Map(p => new ProductDto { Id = p.Id, Name = p.Name });
 ```
 
-O via interface-based desde `Mapper.Map`:
+Or via interface-based from `Mapper.Map`:
 
 ```csharp
 var dtos = Mapper.Map<Product, ProductDto>(pagedResult);
@@ -305,41 +305,41 @@ var dtos = Mapper.Map<Product, ProductDto>(pagedResult);
 
 ---
 
-## Consejos de uso
+## Usage tips
 
-### 1. Para proyectos chicos o APIs simples
-Usá solo lambda-based. No necesitas interfaces, no necesitas SG, no necesitas nada más que el `using MapFlow;`.
+### 1. Small projects or simple APIs
+Use lambda-based only. No interfaces, no SG, nothing beyond `using MapFlow;`.
 
-### 2. Para proyectos medianos+ con DTOs que se repiten
-Hacé que los DTOs implementen `IMapFrom<T>` y usa el SG. El SG genera el `MapFrom` automático para propiedades que coinciden, y vos completás la lógica especial con `CustomMapFrom`.
+### 2. Medium+ projects with repeated DTOs
+Make DTOs implement `IMapFrom<T>` and use the SG. The SG auto-generates `MapFrom` for matching properties, and you fill in the special logic with `CustomMapFrom`.
 
-### 3. Para equipos que vienen de AutoMapper
-No intentes replicar profiles ni resolvers. MapFlow es otro paradigma: más explícito, menos mágico. La transición es: cada `CreateMap` se convierte en un `IMapFrom<TSource>` en el DTO. No hay `ForMember`, no hay `IValueResolver`, no hay `Profile`. Hay métodos que escribís vos.
+### 3. Teams coming from AutoMapper
+Don't try to replicate profiles or resolvers. MapFlow is a different paradigm: more explicit, less magic. The transition is: each `CreateMap` becomes an `IMapFrom<TSource>` on the DTO. There's no `ForMember`, no `IValueResolver`, no `Profile`. There are methods you write.
 
-### 4. Para servicios que apuntan a Native AOT
-MapFlow es completamente compatible con AOT. Sin reflection, sin expression trees, sin carga dinámica. El Source Generator produce código C# que el compilador AOT puede procesar sin problemas.
+### 4. Services targeting Native AOT
+MapFlow is fully AOT compatible. No reflection, no expression trees, no dynamic loading. The Source Generator produces C# code the AOT compiler can process without issues.
 
 ---
 
-## Project Structure
+## Project structure
 
 ```
 MapFlow/
 ├── src/
-│   ├── MapFlow/                          # net8.0 — biblioteca principal
-│   │   ├── IMapFrom.cs                   # Interfaz de mapping origen → destino
-│   │   ├── IMapTo.cs                     # Interfaz de mapping self → destino
-│   │   ├── Mapper.cs                     # Punto de entrada estático
-│   │   ├── MapperExtensions.cs           # Extension methods fluent
-│   │   ├── PagedResult.cs                # Paginación con Map incluido
-│   │   └── MapFlow.png                   # Icono del paquete
+│   ├── MapFlow/                          # net8.0 — core library
+│   │   ├── IMapFrom.cs                   # Source → destination mapping interface
+│   │   ├── IMapTo.cs                     # Self → destination mapping interface
+│   │   ├── Mapper.cs                     # Static entry point
+│   │   ├── MapperExtensions.cs           # Fluent extension methods
+│   │   ├── PagedResult.cs                # Pagination with built-in Map
+│   │   └── MapFlow.png                   # Package icon
 │   └── MapFlow.SourceGenerator/          # netstandard2.0 — Source Generator
-│       └── MapFromGenerator.cs           # Genera MapFrom/MapTo en compilación
+│       └── MapFromGenerator.cs           # Generates MapFrom/MapTo at compile time
 └── test/
     └── MapFlow.Tests/                    # net10.0 — 40 tests
         ├── MapperTests.cs                # 21 tests (core + null guards)
         ├── PagedResultTests.cs           # 8 tests
-        └── SourceGeneratorTests.cs       # 11 tests (SG integración)
+        └── SourceGeneratorTests.cs       # 11 tests (SG integration)
 ```
 
 ---
