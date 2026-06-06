@@ -5,6 +5,9 @@ namespace MapFlow;
 /// The implementing type is responsible for populating its own properties.
 /// </summary>
 /// <typeparam name="TSource">Source type to map from.</typeparam>
+/// <example>
+/// public class UserDto : IMapFrom&lt;User&gt; { ... }
+/// </example>
 public interface IMapFrom<in TSource>
 {
     /// <summary>

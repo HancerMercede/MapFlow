@@ -25,6 +25,9 @@ public class PagedResult<T>
     /// Projects the items of this page using <paramref name="selector"/>,
     /// preserving pagination metadata.
     /// </summary>
+    /// <example>
+    /// paged.Map(x =&gt; x.ToString());
+    /// </example>
     public PagedResult<TDest> Map<TDest>(Func<T, TDest> selector) => new()
     {
         Items = Items.Select(selector).ToList(),

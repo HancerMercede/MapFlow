@@ -97,7 +97,7 @@ def build():
     pdf.ln(30)
     pdf.set_font("Helvetica", "", 10)
     pdf.set_text_color(100)
-    pdf.cell(0, 6, "Complete Guide v1.0", border=0, ln=1, align="C")
+    pdf.cell(0, 6, "Complete Guide v1.1", border=0, ln=1, align="C")
     pdf.cell(0, 6, "github.com/HancerMercede/MapFlow", border=0, ln=1, align="C")
 
     # ── Table of Contents ──
@@ -110,8 +110,9 @@ def build():
         "4.  Mapping Modes",
         "     4.1  Lambda-based (Selector)",
         "     4.2  Interface-based (IMapFrom / IMapTo)",
-        "     4.3  Source Generator (SG)",
-        "     4.4  In-Place Mutation (Apply)",
+        "     4.3  Project (IMapTo)",
+        "     4.4  Source Generator (SG)",
+        "     4.5  In-Place Mutation (Apply)",
         "5.  PagedResult Support",
         "6.  Source Generator Deep Dive",
         "7.  API Reference",
@@ -146,8 +147,9 @@ def build():
     pdf.body_text(
         "MapFlow provides three mapping strategies that scale with your needs: "
         "lambda-based selectors for ad-hoc projections, interface-based mapping for "
-        "repeatable and testable transformations, and a Roslyn Source Generator that "
-        "auto-generates mapping code at compile time for maximum performance."
+        "repeatable and testable transformations (both IMapFrom and IMapTo), "
+        "and a Roslyn Source Generator that auto-generates mapping code at compile time "
+        "for maximum performance."
     )
     pdf.body_text(
         "The core philosophy: the developer always knows what they are mapping. "
@@ -232,7 +234,7 @@ def build():
     # ════════════════════════════════════════════════════════
     pdf.add_page()
     pdf.section_title("4. Mapping Modes")
-    pdf.body_text("MapFlow offers four distinct mapping modes, each optimized for a different scenario.")
+    pdf.body_text("MapFlow offers five distinct mapping modes, each optimized for a different scenario.")
 
     pdf.section_title("4.1  Lambda-based (Selector)", 2)
     pdf.body_text(
@@ -267,6 +269,18 @@ def build():
         "For repeatable mappings across your codebase, implement IMapFrom<TSource> "
         "or IMapTo<TDest> on your DTO/entity. MapFlow handles instantiation and dispatch."
     )
+    pdf.body_text(
+        "These are mechanical contracts, not business-role interfaces:"
+    )
+    pdf.code_block(
+        "IMapTo<T>    = \"this produces T\"          (this -> T)\n"
+        "IMapFrom<T>  = \"this gets populated from T\" (T -> this)"
+    )
+    pdf.body_text(
+        "Both interfaces work in any direction. A DTO can implement IMapTo<Entity> "
+        "to produce entities, and an Entity can implement IMapTo<Dto> to produce DTOs. "
+        "The naming is about the mechanical relationship, not the business layer."
+    )
     pdf.code_block(
         "public class ProductDto : IMapFrom<Product>\n"
         "{\n"
@@ -279,26 +293,64 @@ def build():
         "    }\n"
         "}\n\n"
         "ProductDto dto = Mapper.Map<Product, ProductDto>(product);\n"
-        "ProductDto dto2 = product.MapTo<ProductDto>();\n"
+        "ProductDto dto2 = product.MapTo<Product, ProductDto>();\n"
         "List<ProductDto> dtos = Mapper.Map<Product, ProductDto>(products);"
     )
-    pdf.body_text("IMapTo works symmetrically for the reverse direction:")
+    pdf.body_text("For collections, pass the IEnumerable directly:")
     pdf.code_block(
-        "public class Product : IMapTo<ProductDto>\n"
-        "{\n"
-        "    public int Id { get; set; }\n"
-        "    public string Name { get; set; } = string.Empty;\n\n"
-        "    public ProductDto MapTo() => new()\n"
-        "    {\n"
-        "        Id = Id,\n"
-        "        Name = Name\n"
-        "    };\n"
-        "}\n\n"
-        "ProductDto dto = product.MapTo<ProductDto>();"
+        "List<ProductDto> dtos = Mapper.Map<Product, ProductDto>(products);"
+    )
+    pdf.body_text(
+        "For PagedResult, the pagination metadata is preserved:"
+    )
+    pdf.code_block(
+        "PagedResult<ProductDto> dtos = Mapper.Map<Product, ProductDto>(paged);"
+    )
+    pdf.body_text("Apply works with IMapFrom to update existing instances:")
+    pdf.code_block(
+        "ProductDto existingDto = new();\n"
+        "Mapper.Apply(product, existingDto);  // fills existingDto from product"
+    )
+    pdf.body_text(
+        "When to use it: When the same mapping appears in 2+ places. "
+        "The DTO defines the logic, Mapper executes it."
     )
 
     pdf.add_page()
-    pdf.section_title("4.3  Source Generator (SG)", 2)
+    pdf.section_title("4.3  Project (IMapTo)", 2)
+    pdf.body_text(
+        "Project<TDest>() is syntax sugar over IMapTo. When your source type implements "
+        "IMapTo<TDest>, Project<TDest>() lets you map without specifying the source type:"
+    )
+    pdf.code_block(
+        "// Instead of:\n"
+        "// var dto = Mapper.Map<Product, ProductDto>(product);\n\n"
+        "// With Project<TDest>:\n"
+        "var dto = product.Project<ProductDto>();\n"
+        "ProductDto dto2 = Mapper.Project<ProductDto>(product);"
+    )
+    pdf.body_text(
+        "What Project<TDest>() does internally - it's about 5 lines of pure delegation:"
+    )
+    pdf.code_block(
+        "public static TDest Project<TDest>(this IMapTo<TDest> source)\n"
+        "{\n"
+        "    ArgumentNullException.ThrowIfNull(source);\n"
+        "    return source.MapTo();\n"
+        "}"
+    )
+    pdf.body_text(
+        "Zero reflection, no magic. The JIT inlines it to a direct call. "
+        "Use it when you prefer the succinct fluent style."
+    )
+    pdf.body_text("Key points - use Project<T>() when you already have an IMapTo type:")
+    pdf.bullet("Works with any type implementing IMapTo<TDest>")
+    pdf.bullet("Zero overhead - one-line wrapper, inlined by the JIT")
+    pdf.bullet("Available as extension on IMapTo<T> and as Mapper.Project<T>(object)")
+    pdf.bullet("Does NOT replace Mapper.Map<T, TDest>() - alternative for IMapTo types")
+
+    pdf.add_page()
+    pdf.section_title("4.4  Source Generator (SG)", 2)
     pdf.body_text(
         "The SG eliminates boilerplate by auto-generating MapFrom() / MapTo() "
         "at compile time. Just declare the interface and matching properties."
@@ -330,7 +382,7 @@ def build():
         "}"
     )
 
-    pdf.section_title("4.4  In-Place Mutation (Apply)", 2)
+    pdf.section_title("4.5  In-Place Mutation (Apply)", 2)
     pdf.body_text(
         "Apply() mutates an existing object and returns it. "
         "Perfect for update scenarios and method chaining."
@@ -358,8 +410,13 @@ def build():
     )
     pdf.code_block(
         "PagedResult<Product> paged = await repository.GetAllAsync(...);\n\n"
+        "// Lambda\n"
         "PagedResult<ProductDto> dtos = paged.Map(p =>\n"
         "    new ProductDto(p.Id, p.Name, p.Price));\n\n"
+        "// Interface (static)\n"
+        "PagedResult<ProductDto> dtos = Mapper.Map<Product, ProductDto>(paged);\n\n"
+        "// Interface (fluent)\n"
+        "PagedResult<ProductDto> dtos = paged.MapTo<Product, ProductDto>();\n\n"
         "return Ok(dtos);"
     )
 
@@ -412,6 +469,8 @@ def build():
     pdf.table_header(["Method", "Returns", "Description"], w)
     pdf.table_row(["Map<T,S>(T)", "S", "Interface-based single mapping"], w)
     pdf.table_row(["Map<T,S>(IEnumerable)", "List<S>", "Interface-based collection"], w, True)
+    pdf.table_row(["Map<T,S>(PagedResult<T>)", "PagedResult<S>", "Interface-based paginated mapping"], w)
+    pdf.table_row(["Project<TDest>(object)", "TDest", "Sugar over IMapTo (no source type)"], w, True)
     pdf.table_row(["Apply<T>(T, Action)", "T", "Mutate and return same instance"], w)
     pdf.table_row(["Apply<T>(T, Func)", "T", "Transform and return new instance"], w, True)
 
@@ -420,6 +479,9 @@ def build():
     pdf.table_row(["source.Map(sel)", "TDest", "Selector-based single mapping"], w)
     pdf.table_row(["source.Map(sel) collection", "List<TDest>", "Selector-based collection"], w, True)
     pdf.table_row(["source.MapTo<T>()", "T", "Fluent interface-based mapping"], w)
+    pdf.table_row(["source.MapTo<T>(collection)", "IEnumerable<T>", "Fluent collection mapping"], w, True)
+    pdf.table_row(["source.MapTo<T>(PagedResult)", "PagedResult<T>", "Fluent paginated mapping"], w)
+    pdf.table_row(["source.Project<T>()", "T", "Sugar over IMapTo"], w, True)
     pdf.table_row(["source.Apply(Action)", "TSource", "Mutate and return same"], w, True)
     pdf.table_row(["source.Apply(Func)", "TSource", "Transform and return"], w)
 
@@ -443,8 +505,10 @@ def build():
     )
     pdf.bullet("Mapper.Map(source, selector) validates both source and selector")
     pdf.bullet("Mapper.Apply(source, mutator) validates both")
+    pdf.bullet("Mapper.Project<T>(source) validates source")
     pdf.bullet("source.Map(selector) validates both source and selector")
     pdf.bullet("source.MapTo<T>() validates source")
+    pdf.bullet("source.Project<T>() validates source")
     pdf.bullet("source.Apply(mutator) validates both")
     pdf.bullet("PagedResult<T>.Map(selector) validates selector")
     pdf.body_text(
@@ -568,31 +632,53 @@ def build():
     pdf.add_page()
     pdf.section_title("13. Best Practices")
 
-    pdf.sub_heading("1. Prefer Source Generator for DTOs")
+    pdf.sub_heading("1. Mapping direction convention (read vs write)")
+    pdf.body_text(
+        "Establish a project-wide rule for interface direction. "
+        "The recommended convention:"
+    )
+    pdf.code_block(
+        "IMapFrom<Entity>  = LECTURA (Entity -> DTO)  -> para QUERIES\n"
+        "IMapTo<Entity>    = ESCRITURA (DTO -> Entity) -> para COMMANDS"
+    )
+    pdf.body_text(
+        "Ambas interfaces van SIEMPRE en los DTOs, nunca en las entidades "
+        "de dominio. Esto mantiene la capa de dominio limpia y sin dependencias "
+        "a DTOs. Documentar esta regla una vez (README o conventions.md) "
+        "elimina toda ambigüedad."
+    )
+
+    pdf.sub_heading("2. Prefer Source Generator for DTOs")
     pdf.body_text(
         "If your DTO has matching property names with the source entity, let the SG "
         "do the work. It generates the same code you would write by hand."
     )
 
-    pdf.sub_heading("2. Use lambdas for one-off projections")
+    pdf.sub_heading("3. Use lambdas for one-off projections")
     pdf.body_text(
         "When a mapping is specific to a single use case (e.g., a report projection), "
         "a lambda selector is the clearest and fastest option."
     )
 
-    pdf.sub_heading("3. Use Apply() for updates")
+    pdf.sub_heading("4. Use Apply() for updates")
     pdf.body_text(
         "When modifying existing entities, Apply() with an Action<T> is cleaner "
         "than creating temporary variables and enables method chaining."
     )
 
-    pdf.sub_heading("4. Use CustomMapFrom for edge cases")
+    pdf.sub_heading("5. Use Project<T>() for IMapTo sugar")
+    pdf.body_text(
+        "When your source implements IMapTo<TDest>, Project<TDest>() is the most succinct "
+        "way to invoke the mapping. It reads naturally: product.Project<ProductDto>()."
+    )
+
+    pdf.sub_heading("6. Use CustomMapFrom for edge cases")
     pdf.body_text(
         "When the SG auto-maps most properties but you need custom logic for some, "
         "implement CustomMapFrom() rather than writing the entire MapFrom() manually."
     )
 
-    pdf.sub_heading("5. Keep DTOs partial for SG compatibility")
+    pdf.sub_heading("7. Keep DTOs partial for SG compatibility")
     pdf.body_text(
         "The SG requires partial types. Always declare your DTOs as partial classes "
         "when using IMapFrom or IMapTo with auto-generation."

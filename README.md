@@ -134,8 +134,50 @@ var dtos = Mapper.Map<Product, ProductDto>(products);
 var dtos = Mapper.Map<Product, ProductDto>(pagedResult);
 
 // Or with the fluent alias (same thing):
-var dto = product.MapTo<Product, ProductDto>();
+var dto = product.MapTo<Product, ProductDto>();    // single
+var dtos = products.MapTo<Product, ProductDto>();   // collection
+var dtos = paged.MapTo<Product, ProductDto>();      // PagedResult
 ```
+
+#### Approach 2b: Project (IMapTo)
+
+When the **source** knows how to produce the target, use `IMapTo<T>` and `Project<T>()`:
+
+```csharp
+public class ProductEntity : IMapTo<ProductDto>
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public decimal Price { get; set; }
+
+    // You write the mapping ONCE
+    public ProductDto MapTo() => new()
+    {
+        Id = Id,
+        Name = Name,
+        Price = Price
+    };
+}
+```
+
+Usage:
+
+```csharp
+// Single — one type param, clean syntax
+var dto = product.Project<ProductDto>();
+
+// Works in any direction — the interface is neutral:
+// entity.Project<Dto>()  or  dto.Project<Entity>()
+```
+
+`IMapTo<T>` and `IMapFrom<T>` are **mechanical contracts**, not business-role interfaces:
+
+| Interface | Meaning | Direction |
+|---|---|---|
+| `IMapTo<T>` | "this produces T" | **this → T** |
+| `IMapFrom<T>` | "this gets populated from T" | **T → this** |
+
+Both work with the Source Generator for zero-boilerplate auto-mapping.
 
 You can also apply onto an existing instance:
 
@@ -301,6 +343,12 @@ Or via interface-based from `Mapper.Map`:
 
 ```csharp
 var dtos = Mapper.Map<Product, ProductDto>(pagedResult);
+```
+
+Or with the fluent alias:
+
+```csharp
+var dtos = pagedResult.MapTo<Product, ProductDto>();
 ```
 
 ---

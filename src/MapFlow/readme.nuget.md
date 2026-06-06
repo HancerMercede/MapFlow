@@ -23,6 +23,10 @@ ProductDto dto = product.Map(p => new ProductDto
 ProductDto dto = Mapper.Map<Product, ProductDto>(product);
 List<ProductDto> dtos = Mapper.Map<Product, ProductDto>(products);
 
+// ─── 2b. Project (IMapTo, one type param) ───
+ProductDto dto = product.Project<ProductDto>();
+// Works in any direction: entity.Project<Dto>() or dto.Project<Entity>()
+
 // ─── 3. Source Generator (zero-boilerplate) ───
 public partial class ProductDto : IMapFrom<Product>
 {
@@ -38,6 +42,8 @@ product.Apply(p => { p.Name = request.Name; });
 
 // ─── PagedResult ───
 PagedResult<ProductDto> dtos = pagedProducts.Map(p => new ProductDto(/*...*/));
+PagedResult<ProductDto> dtos = Mapper.Map<Product, ProductDto>(pagedProducts);
+PagedResult<ProductDto> dtos = pagedProducts.MapTo<Product, ProductDto>();
 ```
 
 ---
@@ -63,10 +69,13 @@ PagedResult<ProductDto> dtos = pagedProducts.Map(p => new ProductDto(/*...*/));
 | `source.Map(selector)` | Projects a single object |
 | `source.Map(selector)` (IEnumerable) | Projects a list |
 | `Mapper.Map<TSrc,TDst>(source)` | Interface-based mapping |
-| `source.MapTo<TDest>()` | Fluent interface-based mapping |
+| `source.MapTo<TDest>()` | Fluent interface-based mapping (IMapFrom) |
+| `source.Project<TDest>()` | Projects via IMapTo — one type param |
 | `source.Apply(mutator)` | Mutates and returns the same instance |
 | `source.Apply(transform)` | Transforms and returns a new instance |
 | `pagedResult.Map(selector)` | Projects PagedResult preserving metadata |
+| `Mapper.Map<TSrc,TDst>(PagedResult)` | Maps PagedResult items via interfaces |
+| `pagedResult.MapTo<TSrc,TDst>()` | Fluent PagedResult mapping via interfaces |
 | `Mapper.Map<TSrc,TDst>(items)` | Maps a list via interfaces |
 
 All methods validate arguments and throw `ArgumentNullException` — no silent NPEs.

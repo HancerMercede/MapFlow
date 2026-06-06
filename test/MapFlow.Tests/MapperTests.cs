@@ -360,4 +360,45 @@ public class MapperTests
 
         Assert.Equal("destination", ex.ParamName);
     }
+
+    // ============================================================
+    // Project (IMapTo)
+    // ============================================================
+
+    [Fact]
+    public void Project_Single_IMapTo()
+    {
+        var source = new ProjectSource { Id = 10, Value = "Hello" };
+        var dest = source.Project<ProjectDest>();
+
+        Assert.Equal(10, dest.Id);
+        Assert.Equal("Hello", dest.Value);
+    }
+
+    [Fact]
+    public void Project_NullSource_ThrowsArgumentNullException()
+    {
+        IMapTo<ProjectDest>? nullSource = null;
+
+        var ex = Assert.Throws<ArgumentNullException>(
+            () => nullSource!.Project<ProjectDest>());
+
+        Assert.Equal("source", ex.ParamName);
+    }
+}
+
+// ─── Project test models ──────────────────────────────────────────────
+
+public class ProjectSource : IMapTo<ProjectDest>
+{
+    public int Id { get; set; }
+    public string Value { get; set; } = string.Empty;
+
+    public ProjectDest MapTo() => new() { Id = Id, Value = Value };
+}
+
+public class ProjectDest
+{
+    public int Id { get; set; }
+    public string Value { get; set; } = string.Empty;
 }

@@ -12,6 +12,9 @@ public static class Mapper
     /// Maps <paramref name="source"/> to a new <typeparamref name="TDestination"/>
     /// using <see cref="IMapFrom{TSource}.MapFrom"/>.
     /// </summary>
+    /// <example>
+    /// Mapper.Map&lt;Product, ProductDto&gt;(product);
+    /// </example>
     public static TDestination Map<TSource, TDestination>(TSource source)
         where TDestination : IMapFrom<TSource>, new()
     {
@@ -26,6 +29,9 @@ public static class Mapper
     /// <summary>
     /// Maps each element of <paramref name="source"/> to a new <typeparamref name="TDestination"/>.
     /// </summary>
+    /// <example>
+    /// Mapper.Map&lt;Product, ProductDto&gt;(products);
+    /// </example>
     public static List<TDestination> Map<TSource, TDestination>(IEnumerable<TSource> source)
         where TDestination : IMapFrom<TSource>, new()
     {
@@ -38,6 +44,9 @@ public static class Mapper
     /// <summary>
     /// Maps the items of a <see cref="PagedResult{TSource}"/> preserving pagination metadata.
     /// </summary>
+    /// <example>
+    /// Mapper.Map&lt;Product, ProductDto&gt;(paged);
+    /// </example>
     public static PagedResult<TDestination> Map<TSource, TDestination>(PagedResult<TSource> source)
         where TDestination : IMapFrom<TSource>, new()
     {
@@ -59,6 +68,9 @@ public static class Mapper
     /// <summary>
     /// Projects <paramref name="source"/> using <paramref name="selector"/>.
     /// </summary>
+    /// <example>
+    /// Mapper.Map(product, p =&gt; new ProductDto { ... });
+    /// </example>
     public static TDestination Map<TSource, TDestination>(
         TSource source,
         Func<TSource, TDestination> selector)
@@ -76,6 +88,9 @@ public static class Mapper
     /// <summary>
     /// Applies <paramref name="mutator"/> to <paramref name="source"/> and returns the same instance.
     /// </summary>
+    /// <example>
+    /// Mapper.Apply(user, u =&gt; u.Name = "new");
+    /// </example>
     public static TSource Apply<TSource>(TSource source, Action<TSource> mutator)
     {
         if (source is null)
@@ -90,6 +105,9 @@ public static class Mapper
     /// <summary>
     /// Transforms <paramref name="source"/> via <paramref name="transform"/> and returns the result.
     /// </summary>
+    /// <example>
+    /// Mapper.Apply(user, u =&gt; new User(u.Name.ToUpper()));
+    /// </example>
     public static TSource Apply<TSource>(TSource source, Func<TSource, TSource> transform)
     {
         if (source is null)
@@ -104,6 +122,9 @@ public static class Mapper
     /// Updates an existing <paramref name="destination"/> from <paramref name="source"/>
     /// using <see cref="IMapFrom{TSource}.MapFrom"/>.
     /// </summary>
+    /// <example>
+    /// Mapper.Apply(product, existingDto);
+    /// </example>
     public static void Apply<TSource, TDestination>(TSource source, TDestination destination)
         where TDestination : IMapFrom<TSource>
     {
